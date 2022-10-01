@@ -9,4 +9,4 @@ Application pour effectuer une recherche rapide dans la base de données de CEE.
 
 ## Améliorations à venir
 
-- Ajout des données NEEP pour la recherche des appareils "basses températture".
+- Ajout des données NEEP pour la recherche des appareils "basses température".
