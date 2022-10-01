@@ -33,9 +33,9 @@ def main():
 
     t1.image('Images/flamme.jpeg', width=380)
     t2.title("Recherche d'appareils pour le programme BiÉnergie")
+    t2.header(
+        "Évaluation de la compatibilité entres les équipements à air chaud selon la liste CEE")
     t2.subheader(
-        "Évaluation de la compatibilité entres les équipements à air chaud selon que la liste CEE")
-    t2.markdown(
         "**_Thermopompes - Condenseurs / Évaporateur   |   Fournaise air chaud au gaz naturel_**")
 
     st.write("---")

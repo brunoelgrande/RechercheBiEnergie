@@ -47,3 +47,39 @@ https://stackoverflow.com/questions/66899666/how-to-install-from-requirements-tx
 
 Si besoin d'ajouter un processus d'authentification, une librairie existe : streamlit-authentificator
 https://youtu.be/JoFGrSRj4X4
+
+## Docker
+
+Exemple pour créer un Docker
+
+https://www.section.io/engineering-education/how-to-deploy-streamlit-app-with-docker/
+
+### Commandes Docker:
+
+#### Image locale
+
+`docker build -t brunoelgrande/recherchebienergie:0.x .`
+
+`docker run -p 8501:8501 recherchebienergie:0.x`
+
+Pour pousser vers Docker Hub
+`docker push brunoelgrande/recherchebienergie:0.x`
+
+#### Images vers Docker Hub
+
+`docker login --username=brunoelgrande`
+
+Pour pousser vers Docker Hub avec un build ARM64 et AMD64 (pas d'image locale)
+`docker buildx build --platform linux/amd64,linux/arm64 -t brunoelgrande/recherchebienergie:X.X.X --push .`
+
+    Ref: https://medium.com/geekculture/docker-build-with-mac-m1-d668c802ab96
+
+    Step 1
+    We will need to create a “builder”. I will call it mybuilder.
+
+    `docker buildx create --name mybuilder`
+
+    Step 2
+    Then we tell buildx to use mybuilder.
+
+    `docker buildx use mybuilder`
