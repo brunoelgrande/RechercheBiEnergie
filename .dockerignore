@@ -1,0 +1,10 @@
+# Fichier à ignorer par Docker
+notes.md
+/CEE_export_to_CSV
+/CEE_import_to_XLS
+/__pycache__
+/.git
+.gitignore
+recherche_liste.ipynb
+/.DS_Store
+/.ipynb_checkpoints
