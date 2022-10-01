@@ -4,3 +4,5 @@
 /CEE_import_to_XLS
 /__pycache__
 /recherche_liste.ipynb
+/app
+.dockerignore

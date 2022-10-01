@@ -38,10 +38,6 @@ Si vérifié dans la liste du NEEP, on assume Energy star. (NEEP > Energy Star)
 
 https://www.webfx.com/tools/emoji-cheat-sheet/
 
-## Comment mettre les fonctions dans au autre fichier ?
-
-from function import \*
-
 ## Requirements
 
 Fichier requirements.txt
