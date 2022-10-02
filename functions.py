@@ -6,9 +6,8 @@ Pour utilisation par : rechercherBiEnergie.py
 Created on 2022-09-29
 @author: Bruno Gauthier
 """
-from matplotlib.pyplot import axis
+
 import streamlit as st
-import time
 import re
 import pandas as pd
 
