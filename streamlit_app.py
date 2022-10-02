@@ -17,14 +17,7 @@ def main():
     st.set_page_config(page_title='Recherche BiEnergie',
                        layout='wide', page_icon=':fire:')
 
-    # Ouverture du fichier excel pour importer la liste complète (critère pour importer Label Energy Star : Yes & Vendu au Canada)
-
-    df_CEE = importData('CEE_data.csv')
-
     # Initialisation de variables
-    type_equip = ["Condenseur Extérieur", "Evaporateur Intérieur", "Fournaise"]
-    verif_trio_str = "Vérification des TRIO  :no_entry:"
-    verif_duo_str = "Vérification des DUO  :no_entry:"
     equip_prop = ["", "", ""]
 
     # Section Hearder de Streamlit
@@ -56,7 +49,23 @@ def main():
 
     submit = form.form_submit_button("Rechercher")
 
-    # Au clic du bouton 'Rechercher'
+    # Une fois le site chargé, charger les données et les préparer
+
+    # Ouverture du fichier excel pour importer la liste complète (critère pour importer Label Energy Star : Yes & Vendu au Canada)
+    df_CEE = importData('CEE_data.csv')
+
+    # Préparation des données de la liste CEE pour recherche RegEx
+    df_CEE['Condenseur_Prep'] = df_CEE.apply(
+        lambda x: prepString(x['Condenseur']), axis=1)
+
+    df_CEE['Evaporateur_Prep'] = df_CEE.apply(
+        lambda x: prepString(x['Evaporateur']), axis=1)
+
+    df_CEE['Fournaise_Prep'] = df_CEE.apply(
+        lambda x: prepString(x['Fournaise']), axis=1)
+
+    # Au clic du bouton 'Rechercher', trouver les matches et afficher les résultats / suggestions
+
     if submit:
         equip_prop = [cond_prop.upper(), evap_prop.upper(),
                       fournaise_prop.upper()]

@@ -6,17 +6,12 @@ Pour utilisation par : rechercherBiEnergie.py
 Created on 2022-09-29
 @author: Bruno Gauthier
 """
+from matplotlib.pyplot import axis
 import streamlit as st
 import time
 import re
 import pandas as pd
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-
-
-def importData(nom_fichier: str) -> pd.DataFrame:
-
-    return pd.read_csv(nom_fichier, index_col='index')
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -32,15 +27,19 @@ def prepString(String: str) -> str:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 
+def importData(nom_fichier: str) -> pd.DataFrame:
+
+    df = pd.read_csv(nom_fichier, index_col='index')
+
+    return df
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+
 def rechercheRegEx(equip_prop: list[str], equip_liste: list[str]) -> list[bool]:
 
     # Initialisation des listes
     equip_format = ["", "", ""]
     verif = [False, False, False]
-
-    # Remplacer le wildcard '*' de la liste CEE par le wildcard '.' de RegEx
-    for x in range(len(equip_liste)):
-        equip_liste[x] = prepString(equip_liste[x])
 
     # Besoin que l'équipement proposé soit de la même longueur que l'élément vérifié de la liste
     for x in range(len(equip_prop)):
@@ -63,9 +62,9 @@ def finddMatches(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
     liste_match = []   # [Index de liste, match condenseur, match evaporateur, match fournaise]
 
     for i in df_CEE.index:
-        equip_liste = [df_CEE['Condenseur'].iloc[i],
-                       df_CEE['Evaporateur'].iloc[i],
-                       df_CEE['Fournaise'].iloc[i]]
+        equip_liste = [df_CEE['Condenseur_Prep'].iloc[i],
+                       df_CEE['Evaporateur_Prep'].iloc[i],
+                       df_CEE['Fournaise_Prep'].iloc[i]]
 
         verif = rechercheRegEx(equip_prop, equip_liste)
 
