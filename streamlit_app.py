@@ -83,14 +83,14 @@ def main():
         else:
 
             df_trio = df_CEE.iloc[df_matches.query(
-                "Condenseur==True & Evaporateur == True & Fournaise == True")['index']]
+                "Condenseur==True & Evaporateur == True & Fournaise == True")['index']].drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
             df_duo = df_CEE.iloc[df_matches.query(
-                "Condenseur==True & Evaporateur == True")['index']]
+                "Condenseur==True & Evaporateur == True")['index']].drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
 
             df_cond = df_CEE.iloc[df_matches.query(
-                "Condenseur==True")['index']]
+                "Condenseur==True")['index']].drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
             df_evap = df_CEE.iloc[df_matches.query(
-                "Evaporateur==True")['index']]
+                "Evaporateur==True")['index']].drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
 
             # Un TRIO existe
             if (len(df_trio) > 0):
