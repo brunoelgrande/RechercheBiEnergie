@@ -1,0 +1,49 @@
+index : 67686,
+AHRI : 202746392,
+YORK BY JOHNSON CONTROLS,
+YORK,
+
+Condenseur
+YHG42B21
+
+Évap
+CM48CBCA1
+
+Fournaise
+TM9Y080C16MP11
+---
+Condenseur manque une lettre
+YHG42B
+
+Évap mauvaise puissance
+CM42CBCA1
+
+---
+-----------------------------
+index: 20735,
+AHRI : 206154627,
+CARRIER AIR CONDITIONING,
+KEEPRITE,
+
+Condenseur 
+CCH636GKA**
+CCH636GKAXYZ
+
+Évap 
+EA*4X48L21A*
+EAX4X48L21AX
+
+
+Fournaise
+*80VSL0701716A*
+X80VSL0701716AX
+
+---
+Condenseur manque une lettre
+CCH636GKAX
+
+Évap mauvaise puissance
+EAX4X42L21AX
+
+Fournaise manque une lettre
+X80VSL0701716A
