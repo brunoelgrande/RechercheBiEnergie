@@ -106,7 +106,7 @@ def finddMatches(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
 def finddMatchePartiels(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
 
     liste_match = []   # [index, match condenseur, match evaporateur, match fournaise]
-    df_matchesPart = pd.DataFrame({'': []}) # Empty DF, si tout est faux
+    df_matchesPart = pd.DataFrame({'': []})  # Empty DF, si tout est faux
     # Faire recherche seulement si au moins 'dim_minimale' caractères :
     dim_minimale = 3
     verif_active = [(len(equip_prop[0]) >= dim_minimale),
@@ -130,7 +130,7 @@ def finddMatchePartiels(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataF
                 # Ajuster le nombre de lettre à rechercher
                 equip_prop_partiel[x] = equip_prop[x][:-indentation]
 
-                if (len(equip_prop_partiel[x]) > dim_minimale):
+                if (len(equip_prop_partiel[x]) >= dim_minimale):
 
                     for i in df_CEE.index:
                         equip_liste = [df_CEE['Condenseur_Prep'].iloc[i],
