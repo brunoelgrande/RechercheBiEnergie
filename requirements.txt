@@ -3,3 +3,4 @@ pip==22.2.2
 streamlit==1.13.0
 watchdog==2.1.9
 pyxlsb==1.0.10
+xlsxwriter==3.0.1
