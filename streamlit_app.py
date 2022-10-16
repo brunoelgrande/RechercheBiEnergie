@@ -8,6 +8,8 @@ Created on 2022-09-29
 """
 import streamlit as st
 import pandas as pd
+from pyxlsb import open_workbook as open_xlsb
+from io import BytesIO
 
 from functions import *
 
@@ -74,23 +76,82 @@ def main():
         df_matches = finddMatches(equip_prop, df_CEE)
 
         if (len(df_matches) == 0):
-            c2.title('Aucun appareil valide')
+            c2.title('Aucun appareil valide :no_entry:')
             c2.error(':warning: Validez votre sélection')
 
-            # Idées  -->  sous routine pour aller chercher des condenseurs avec moins de lettre, pour suggestion ??
+        # Préparation de propositions si aucun match :
+
+            with st.spinner(":hourglass: Recherche en cours"):
+
+                df_matchesPartiels = finddMatchePartiels(
+                    equip_prop, df_CEE)
+
+                if (len(df_matchesPartiels) > 0):
+
+                    df_condPartiel = (df_CEE
+                                      .iloc[df_matchesPartiels.query("Condenseur==True")['index']]
+                                      .filter(['Marque', 'Condenseur'])
+                                      .drop_duplicates()
+                                      .sort_values(['Marque', 'Condenseur'])
+                                      .reset_index(drop=True))
+                    df_evapPartiel = (df_CEE
+                                      .iloc[df_matchesPartiels.query("Evaporateur==True")['index']]
+                                      .filter(['Marque', 'Evaporateur'])
+                                      .drop_duplicates()
+                                      .sort_values(['Marque', 'Evaporateur'])
+                                      .reset_index(drop=True))
+                    df_fournaisePartiel = (df_CEE
+                                           .iloc[df_matchesPartiels.query("Fournaise==True")['index']]
+                                           .filter(['Marque', 'Fournaise'])
+                                           .drop_duplicates()
+                                           .sort_values(['Marque', 'Fournaise'])
+                                           .reset_index(drop=True))
+
+                    if len(df_matchesPartiels) > 0:
+                        c2.info(
+                            "Proposition d'appreils près de vos sélections")
+                    if len(df_condPartiel) > 0:
+                        c2.write(
+                            'Liste de condenseurs près de votre sélection')
+                        c2.dataframe(df_condPartiel,
+                                     use_container_width=True)
+                    if len(df_evapPartiel) > 0:
+                        c2.write(
+                            "Liste d'évaporateurs près de votre sélection")
+                        c2.dataframe(df_evapPartiel,
+                                     use_container_width=True)
+                    if len(df_fournaisePartiel) > 0:
+                        c2.write(
+                            'Liste de fournaises près près de votre sélection')
+                        c2.dataframe(df_fournaisePartiel,
+                                     use_container_width=True)
 
         # Si au moins au matches sur un des types d'équipements
         else:
 
-            df_trio = df_CEE.iloc[df_matches.query(
-                "Condenseur==True & Evaporateur == True & Fournaise == True")['index']].drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
-            df_duo = df_CEE.iloc[df_matches.query(
-                "Condenseur==True & Evaporateur == True")['index']].drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
+            df_trio = (df_CEE
+                       .iloc[df_matches.query("Condenseur==True & Evaporateur == True & Fournaise == True")['index']]
+                       .drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
+                       .reset_index(drop=True))
 
-            df_cond = df_CEE.iloc[df_matches.query(
-                "Condenseur==True")['index']].drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
-            df_evap = df_CEE.iloc[df_matches.query(
-                "Evaporateur==True")['index']].drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
+            df_duo = (df_CEE
+                      .iloc[df_matches.query("Condenseur==True & Evaporateur == True")['index']]
+                      .drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
+                      .reset_index(drop=True))
+
+            df_cond = (df_CEE
+                       .iloc[df_matches.query("Condenseur==True")['index']]
+                       .drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
+                       .reset_index(drop=True))
+            df_evap = (df_CEE
+                       .iloc[df_matches.query("Evaporateur==True")['index']]
+                       .drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
+                       .reset_index(drop=True))
+
+            df_fournaise = (df_CEE
+                            .iloc[df_matches.query("Fournaise==True")['index']]
+                            .drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
+                            .reset_index(drop=True))
 
             # Un TRIO existe
             if (len(df_trio) > 0):
@@ -98,6 +159,19 @@ def main():
                 # modifier pour un plus beau tableau + éliminer index
                 c2.dataframe(df_trio.sort_values('AHRI'),
                              use_container_width=True)
+
+                # Bouton Download TRIO
+                df_temp = (df_trio
+                           .sort_values('AHRI')
+                           .reset_index(drop=True)
+                           )
+                df_temp.at[0, 'Condenseur Proposé'] = equip_prop[0]
+                df_temp.at[0, 'Évaporateur Proposé'] = equip_prop[1]
+                c2.download_button(
+                    label="📥 Télécharger résultats TRIO",
+                    data=to_excel(df_temp, 'Trio'),
+                    file_name='resultat_trio.xlsx')
+
             else:
                 c2.header("Vérification des TRIO  :no_entry:")
                 c2.write(":warning:  Aucun TRIO n'a été trouvé.")
@@ -111,7 +185,22 @@ def main():
                 c2.markdown(
                     "**_Vérification de la thermopompe (condenseur et évaporateurs proposés) seulement_**")
                 c2.dataframe(df_duo.drop(columns='Fournaise').sort_values(
-                    'AHRI'), use_container_width=True)
+                    'AHRI').reset_index(drop=True), use_container_width=True)
+
+                # Bouton Download DUO
+                df_temp = (df_duo
+                           .drop(columns='Fournaise')
+                           .sort_values('AHRI')
+                           .reset_index(drop=True)
+                           )
+                df_temp.at[0, 'Condenseur Proposé'] = equip_prop[0]
+                df_temp.at[0, 'Évaporateur Proposé'] = equip_prop[1]
+
+                c2.download_button(
+                    label="📥 Télécharger résultats DUO",
+                    data=to_excel(df_temp, 'Duo'),
+                    file_name='resultat_duo.xlsx')
+
                 c2.write("")
 
                 verif_duo_exp = c2.expander(
@@ -119,10 +208,25 @@ def main():
                 verif_duo_exp.write(phraseAccompagnement(
                     'fournaises', df_duo))  # compléter texte + tableau
 
-                # Ajout tableau des founaises qui pourraient matcher
-                fournaise = pd.DataFrame(df_duo['Fournaise'].unique().tolist())
-                fournaise.columns = ['Fournaise']
-                verif_duo_exp.dataframe(fournaise, use_container_width=True)
+                sugg_fournaise = (df_duo
+                                  .filter(['Marque', 'Fournaise'])
+                                  .drop_duplicates()
+                                  .sort_values(['Marque', 'Fournaise'])
+                                  .reset_index(drop=True))
+
+                verif_duo_exp.dataframe(sugg_fournaise.filter(
+                    ['Fournaise']), use_container_width=True)
+
+                sugg_fournaise.at[0, 'Condenseur Proposé'] = equip_prop[0]
+                sugg_fournaise.at[0, 'Évaporateur Proposé'] = equip_prop[1]
+
+                # Bouton Download FOURNAISES proposées
+                verif_duo_exp.download_button(
+                    label="📥 Télécharger propositions FOURNAISES",
+                    data=to_excel(sugg_fournaise,
+                                  'Propositions FOURNAISES'),
+                    file_name='propositions_fournaises.xlsx')
+
                 verif_duo_exp.write(
                     '_Attention : bien valider la sélection complète_')
 
@@ -135,6 +239,9 @@ def main():
 
                 # Au moins 1 match sur un condenseur
                 if (len(df_matches.query('Condenseur == True')) > 0):
+
+                    c2.success("Le condenseur est un modèle admissible.")
+
                     verif_duo_exp = c2.expander(
                         "Suggestion d'évaporateurs pour le condenseur sélectionné.")
 
@@ -152,6 +259,9 @@ def main():
 
                 # Au moins 1 match sur un evaporateur
                 if (len(df_matches.query('Evaporateur == True')) > 0):
+
+                    c2.success("L'évaporateur est un modèle admissible.")
+
                     verif_duo_exp = c2.expander(
                         "Suggestion de condenseurs pour l'évaporateur séléectionné.")
                     verif_duo_exp.write(phraseAccompagnement(
@@ -163,6 +273,41 @@ def main():
                     condenseur.columns = ['Condenseur']
                     verif_duo_exp.dataframe(
                         condenseur, use_container_width=True)
+                    verif_duo_exp.write("")
+                    verif_duo_exp.write(
+                        '_Attention : bien valider la sélection complète_')
+
+                # Au moins 1 match sur une fournaise
+                if (len(df_matches.query('Fournaise == True')) > 0):
+
+                    c2.success("La fournaise est un modèle admissible.")
+
+                    verif_duo_exp = c2.expander(
+                        "Suggestion de condenseurs pour la fournaise séléctionnée.")
+                    verif_duo_exp.write(phraseAccompagnement(
+                        "condenseurs", df_fournaise))  # compléter texte + tableau
+
+                    # Ajout tableau des condenseur qui pourraient matcher
+                    condenseur = pd.DataFrame(
+                        df_fournaise['Condenseur'].unique().tolist())
+                    condenseur.columns = ['Condenseur']
+                    verif_duo_exp.dataframe(
+                        condenseur, use_container_width=True)
+                    verif_duo_exp.write("")
+                    verif_duo_exp.write(
+                        '_Attention : bien valider la sélection complète_')
+
+                    verif_duo_exp = c2.expander(
+                        "Suggestion d'évaporateurs pour la fournaise sélectionnée.")
+
+                    verif_duo_exp.write(
+                        phraseAccompagnement('évaporateurs', df_fournaise))
+
+                    # Ajout tableau des évaporateurs qui pourraient matcher
+                    evap = pd.DataFrame(
+                        df_fournaise['Evaporateur'].unique().tolist())
+                    evap.columns = ['Évaporateur']
+                    verif_duo_exp.dataframe(evap, use_container_width=True)
                     verif_duo_exp.write("")
                     verif_duo_exp.write(
                         '_Attention : bien valider la sélection complète_')
