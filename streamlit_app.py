@@ -88,24 +88,12 @@ def main():
 
                 if not df_matchesPartiels.empty:
 
-                    df_condPartiel = (df_CEE
-                                      .iloc[df_matchesPartiels.query("Condenseur==True")['index']]
-                                      .filter(['Marque', 'Condenseur'])
-                                      .drop_duplicates()
-                                      .sort_values(['Marque', 'Condenseur'])
-                                      .reset_index(drop=True))
-                    df_evapPartiel = (df_CEE
-                                      .iloc[df_matchesPartiels.query("Evaporateur==True")['index']]
-                                      .filter(['Marque', 'Evaporateur'])
-                                      .drop_duplicates()
-                                      .sort_values(['Marque', 'Evaporateur'])
-                                      .reset_index(drop=True))
-                    df_fournaisePartiel = (df_CEE
-                                           .iloc[df_matchesPartiels.query("Fournaise==True")['index']]
-                                           .filter(['Marque', 'Fournaise'])
-                                           .drop_duplicates()
-                                           .sort_values(['Marque', 'Fournaise'])
-                                           .reset_index(drop=True))
+                    df_condPartiel = cleanDF(
+                        df_CEE, df_matchesPartiels, 'Condenseur')
+                    df_evapPartiel = cleanDF(
+                        df_CEE, df_matchesPartiels, 'Evaporateur')
+                    df_fournaisePartiel = cleanDF(
+                        df_CEE, df_matchesPartiels, 'Fournaise')
 
                     if not df_matchesPartiels.empty:
                         c2.info(

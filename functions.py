@@ -222,3 +222,15 @@ def to_excel(df: pd.DataFrame, onglet: str):
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# Opérations sur DF pour matches
+def cleanDF(df_CEE: pd.DataFrame, df_matchesPartiels: pd.DataFrame, app: str) -> pd.DataFrame:
+
+    df = (df_CEE
+          .iloc[df_matchesPartiels.query(f"{app}==True")['index']]
+          .filter(['Marque', app])
+          .drop_duplicates()
+          .sort_values(['Marque', app])
+          .reset_index(drop=True))
+
+    return df

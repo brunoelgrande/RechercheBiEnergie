@@ -83,25 +83,12 @@ def test_finddMatcheSansCond():
     df_test = finddMatches(
         ["", "CM48CBCA1", "TM9Y080C16MP11"], df_CEE)
 
-    df_cond = (df_CEE
-               .iloc[df_test.query("Condenseur==True")['index']]
-               .filter(['Condenseur'])
-               .drop_duplicates()
-               .sort_values(['Condenseur'])
-               .reset_index(drop=True))
-
-    df_evap = (df_CEE
-               .iloc[df_test.query("Evaporateur==True")['index']]
-               .filter(['Evaporateur'])
-               .drop_duplicates()
-               .sort_values(['Evaporateur'])
-               .reset_index(drop=True))
-    df_fournaise = (df_CEE
-                    .iloc[df_test.query("Fournaise==True")['index']]
-                    .filter(['Fournaise'])
-                    .drop_duplicates()
-                    .sort_values(['Fournaise'])
-                    .reset_index(drop=True))
+    df_cond = cleanDF(
+        df_CEE, df_test, 'Condenseur')
+    df_evap = cleanDF(
+        df_CEE, df_test, 'Evaporateur')
+    df_fournaise = cleanDF(
+        df_CEE, df_test, 'Fournaise')
 
     resultats = [df_evap.at[0, 'Evaporateur'],
                  df_fournaise.at[0, 'Fournaise']]
@@ -115,25 +102,12 @@ def test_finddMatcheTropLong():
     df_test = finddMatches(
         ["YHG42B21XXX", "CM48CBCA1XXX", "TM9Y080C16MP11XXX"], df_CEE)
 
-    df_cond = (df_CEE
-               .iloc[df_test.query("Condenseur==True")['index']]
-               .filter(['Condenseur'])
-               .drop_duplicates()
-               .sort_values(['Condenseur'])
-               .reset_index(drop=True))
-
-    df_evap = (df_CEE
-               .iloc[df_test.query("Evaporateur==True")['index']]
-               .filter(['Evaporateur'])
-               .drop_duplicates()
-               .sort_values(['Evaporateur'])
-               .reset_index(drop=True))
-    df_fournaise = (df_CEE
-                    .iloc[df_test.query("Fournaise==True")['index']]
-                    .filter(['Fournaise'])
-                    .drop_duplicates()
-                    .sort_values(['Fournaise'])
-                    .reset_index(drop=True))
+    df_cond = cleanDF(
+        df_CEE, df_test, 'Condenseur')
+    df_evap = cleanDF(
+        df_CEE, df_test, 'Evaporateur')
+    df_fournaise = cleanDF(
+        df_CEE, df_test, 'Fournaise')
 
     resultats = [df_cond.at[0, 'Condenseur'],
                  df_evap.at[0, 'Evaporateur'],
@@ -160,25 +134,12 @@ def test_finddMatchePartielsManque2():
     df_test = finddMatchePartiels(
         ["YHG42B", "CM48CBC", "TM9Y080C16MP"], df_CEE)
 
-    df_condPartiel = (df_CEE
-                      .iloc[df_test.query("Condenseur==True")['index']]
-                      .filter(['Condenseur'])
-                      .drop_duplicates()
-                      .sort_values(['Condenseur'])
-                      .reset_index(drop=True))
-
-    df_evapPartiel = (df_CEE
-                      .iloc[df_test.query("Evaporateur==True")['index']]
-                      .filter(['Evaporateur'])
-                      .drop_duplicates()
-                      .sort_values(['Evaporateur'])
-                      .reset_index(drop=True))
-    df_fournaisePartiel = (df_CEE
-                           .iloc[df_test.query("Fournaise==True")['index']]
-                           .filter(['Fournaise'])
-                           .drop_duplicates()
-                           .sort_values(['Fournaise'])
-                           .reset_index(drop=True))
+    df_condPartiel = cleanDF(
+        df_CEE, df_test, 'Condenseur')
+    df_evapPartiel = cleanDF(
+        df_CEE, df_test, 'Evaporateur')
+    df_fournaisePartiel = cleanDF(
+        df_CEE, df_test, 'Fournaise')
 
     resultats = [df_condPartiel.at[0, 'Condenseur'],
                  df_evapPartiel.at[0, 'Evaporateur'],
@@ -192,25 +153,12 @@ def test_finddMatchePartielsSansCond():
     df_test = finddMatchePartiels(
         ["", "CM48CBC", "TM9Y080C16MP"], df_CEE)
 
-    df_condPartiel = (df_CEE
-                      .iloc[df_test.query("Condenseur==True")['index']]
-                      .filter(['Condenseur'])
-                      .drop_duplicates()
-                      .sort_values(['Condenseur'])
-                      .reset_index(drop=True))
-
-    df_evapPartiel = (df_CEE
-                      .iloc[df_test.query("Evaporateur==True")['index']]
-                      .filter(['Evaporateur'])
-                      .drop_duplicates()
-                      .sort_values(['Evaporateur'])
-                      .reset_index(drop=True))
-    df_fournaisePartiel = (df_CEE
-                           .iloc[df_test.query("Fournaise==True")['index']]
-                           .filter(['Fournaise'])
-                           .drop_duplicates()
-                           .sort_values(['Fournaise'])
-                           .reset_index(drop=True))
+    df_condPartiel = cleanDF(
+        df_CEE, df_test, 'Condenseur')
+    df_evapPartiel = cleanDF(
+        df_CEE, df_test, 'Evaporateur')
+    df_fournaisePartiel = cleanDF(
+        df_CEE, df_test, 'Fournaise')
 
     resultats = [df_evapPartiel.at[0, 'Evaporateur'],
                  df_fournaisePartiel.at[0, 'Fournaise']]
@@ -224,25 +172,12 @@ def test_finddMatchePartielsTropLong():
     df_test = finddMatchePartiels(
         ["YHG42B21XXX", "CM48CBCA1XXX", "TM9Y080C16MP11XXX"], df_CEE)
 
-    df_condPartiel = (df_CEE
-                      .iloc[df_test.query("Condenseur==True")['index']]
-                      .filter(['Condenseur'])
-                      .drop_duplicates()
-                      .sort_values(['Condenseur'])
-                      .reset_index(drop=True))
-
-    df_evapPartiel = (df_CEE
-                      .iloc[df_test.query("Evaporateur==True")['index']]
-                      .filter(['Evaporateur'])
-                      .drop_duplicates()
-                      .sort_values(['Evaporateur'])
-                      .reset_index(drop=True))
-    df_fournaisePartiel = (df_CEE
-                           .iloc[df_test.query("Fournaise==True")['index']]
-                           .filter(['Fournaise'])
-                           .drop_duplicates()
-                           .sort_values(['Fournaise'])
-                           .reset_index(drop=True))
+    df_condPartiel = cleanDF(
+        df_CEE, df_test, 'Condenseur')
+    df_evapPartiel = cleanDF(
+        df_CEE, df_test, 'Evaporateur')
+    df_fournaisePartiel = cleanDF(
+        df_CEE, df_test, 'Fournaise')
 
     resultats = [df_condPartiel.at[0, 'Condenseur'],
                  df_evapPartiel.at[0, 'Evaporateur'],
