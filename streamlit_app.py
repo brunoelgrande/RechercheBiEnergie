@@ -75,7 +75,7 @@ def main():
         # Avec fonction de cache pour éviter de reloader les données à chaque fois si les equipements n'ont pas changé.
         df_matches = finddMatches(equip_prop, df_CEE)
 
-        if (len(df_matches) == 0):
+        if df_matches.empty:
             c2.title('Aucun appareil valide :no_entry:')
             c2.error(':warning: Validez votre sélection')
 
@@ -86,7 +86,7 @@ def main():
                 df_matchesPartiels = finddMatchePartiels(
                     equip_prop, df_CEE)
 
-                if (len(df_matchesPartiels) > 0):
+                if not df_matchesPartiels.empty:
 
                     df_condPartiel = (df_CEE
                                       .iloc[df_matchesPartiels.query("Condenseur==True")['index']]
@@ -107,20 +107,20 @@ def main():
                                            .sort_values(['Marque', 'Fournaise'])
                                            .reset_index(drop=True))
 
-                    if len(df_matchesPartiels) > 0:
+                    if not df_matchesPartiels.empty:
                         c2.info(
                             "Proposition d'appreils près de vos sélections")
-                    if len(df_condPartiel) > 0:
+                    if not df_condPartiel.empty:
                         c2.write(
                             'Liste de condenseurs près de votre sélection')
                         c2.dataframe(df_condPartiel,
                                      use_container_width=True)
-                    if len(df_evapPartiel) > 0:
+                    if not df_evapPartiel.empty:
                         c2.write(
                             "Liste d'évaporateurs près de votre sélection")
                         c2.dataframe(df_evapPartiel,
                                      use_container_width=True)
-                    if len(df_fournaisePartiel) > 0:
+                    if not df_fournaisePartiel.empty:
                         c2.write(
                             'Liste de fournaises près près de votre sélection')
                         c2.dataframe(df_fournaisePartiel,
@@ -156,7 +156,7 @@ def main():
                             .reset_index(drop=True))
 
             # Un TRIO existe
-            if (len(df_trio) > 0):
+            if not df_trio.empty:
                 c2.header("Vérification des TRIO  :white_check_mark:")
                 # modifier pour un plus beau tableau + éliminer index
                 c2.dataframe(df_trio,
@@ -182,7 +182,7 @@ def main():
             c2.write("---")
 
             # Un DUO existe
-            if (len(df_duo) > 0):
+            if not df_duo.empty:
                 c2.header("Vérification des DUO  :white_check_mark:")
                 c2.markdown(
                     "**_Vérification de la thermopompe (condenseur et évaporateurs proposés) seulement_**")
