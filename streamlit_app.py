@@ -132,12 +132,14 @@ def main():
             df_trio = (df_CEE
                        .iloc[df_matches.query("Condenseur==True & Evaporateur == True & Fournaise == True")['index']]
                        .drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
-                       .reset_index(drop=True))
+                       .reset_index(drop=True)
+                       .sort_values('AHRI'))
 
             df_duo = (df_CEE
                       .iloc[df_matches.query("Condenseur==True & Evaporateur == True")['index']]
                       .drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
-                      .reset_index(drop=True))
+                      .reset_index(drop=True)
+                      .sort_values('AHRI'))
 
             df_cond = (df_CEE
                        .iloc[df_matches.query("Condenseur==True")['index']]
@@ -157,7 +159,7 @@ def main():
             if (len(df_trio) > 0):
                 c2.header("Vérification des TRIO  :white_check_mark:")
                 # modifier pour un plus beau tableau + éliminer index
-                c2.dataframe(df_trio.sort_values('AHRI'),
+                c2.dataframe(df_trio,
                              use_container_width=True)
 
                 # Bouton Download TRIO
@@ -184,13 +186,12 @@ def main():
                 c2.header("Vérification des DUO  :white_check_mark:")
                 c2.markdown(
                     "**_Vérification de la thermopompe (condenseur et évaporateurs proposés) seulement_**")
-                c2.dataframe(df_duo.drop(columns='Fournaise').sort_values(
-                    'AHRI').reset_index(drop=True), use_container_width=True)
+                c2.dataframe(df_duo.drop(columns='Fournaise').reset_index(
+                    drop=True), use_container_width=True)
 
                 # Bouton Download DUO
                 df_temp = (df_duo
                            .drop(columns='Fournaise')
-                           .sort_values('AHRI')
                            .reset_index(drop=True)
                            )
                 df_temp.at[0, 'Condenseur Proposé'] = equip_prop[0]
