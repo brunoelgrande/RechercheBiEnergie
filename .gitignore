@@ -1,5 +1,6 @@
 /.DS_Store
 /.ipynb_checkpoints
+/.pytest_cache
 /CEE_export_to_CSV
 /CEE_import_to_XLS
 /__pycache__
@@ -8,3 +9,4 @@
 notes-perso.md
 exemple_trio.txt
 exemple_reel.txt
+pytest.ini

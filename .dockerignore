@@ -3,6 +3,7 @@ notes.md
 /CEE_export_to_CSV
 /CEE_import_to_XLS
 /__pycache__
+/.pytest_cache
 /.git
 .gitignore
 recherche_liste.ipynb
@@ -11,3 +12,5 @@ recherche_liste.ipynb
 notes-perso.md
 exemple_trio.txt
 exemple_reel.txt
+pytest.ini
+test_*
