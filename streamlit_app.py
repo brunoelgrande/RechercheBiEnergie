@@ -10,6 +10,7 @@ import streamlit as st
 import pandas as pd
 from pyxlsb import open_workbook as open_xlsb
 from io import BytesIO
+from datetime import datetime
 
 from functions import *
 
@@ -157,6 +158,7 @@ def main():
                            )
                 df_temp.at[0, 'Condenseur Proposé'] = equip_prop[0]
                 df_temp.at[0, 'Évaporateur Proposé'] = equip_prop[1]
+                df_temp.at[0, 'Vérifié le'] = datetime.now()
                 c2.download_button(
                     label="📥 Télécharger résultats TRIO",
                     data=to_excel(df_temp, 'Trio'),
@@ -184,6 +186,7 @@ def main():
                            )
                 df_temp.at[0, 'Condenseur Proposé'] = equip_prop[0]
                 df_temp.at[0, 'Évaporateur Proposé'] = equip_prop[1]
+                df_temp.at[0, 'Vérifié le'] = datetime.now()
 
                 c2.download_button(
                     label="📥 Télécharger résultats DUO",
@@ -208,6 +211,7 @@ def main():
 
                 sugg_fournaise.at[0, 'Condenseur Proposé'] = equip_prop[0]
                 sugg_fournaise.at[0, 'Évaporateur Proposé'] = equip_prop[1]
+                sugg_fournaise.at[0, 'Vérifié le'] = datetime.now()
 
                 # Bouton Download FOURNAISES proposées
                 verif_duo_exp.download_button(
