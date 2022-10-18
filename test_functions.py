@@ -3,14 +3,13 @@
 Test pour vérification des fonctions avec pytest
 Pour utilisation par : streamlit_app.py
 
-`> pytest`
+`> pytest` 
 
 Created on 2022-10-17
 @author: Bruno Gauthier
 """
 
 from functions import *
-
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
