@@ -331,7 +331,7 @@ def main():
             c2.error(':warning:  Aucun résultat pour ce numéro AHRI')
         else:
             c2.success(
-                ":white_check_mark:  Appareils trouvés pour ce numéro AHRI")
+                ":white_check_mark:  Combinaison trouvée pour ce numéro AHRI")
             c2.dataframe(df_AHRI, use_container_width=True)
 
             # Bouton Download AHRI
