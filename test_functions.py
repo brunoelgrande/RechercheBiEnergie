@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Test pour vérification des fonctions avec pytest
-Pour utilisation par : rechercherBiEnergie.py
+Pour utilisation par : streamlit_app.py
 
 `> pytest`
 
