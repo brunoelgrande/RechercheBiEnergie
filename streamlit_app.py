@@ -79,6 +79,9 @@ def main():
     # Au clic du bouton 'Rechercher', trouver les matches et afficher les résultats / suggestions
 
     if submit_Appareils:
+
+        c2.title("Vérification par modèles d'appareils")
+
         equip_prop = [cond_prop.upper(), evap_prop.upper(),
                       fournaise_prop.upper()]
 
@@ -86,7 +89,7 @@ def main():
         df_matches = finddMatches(equip_prop, df_CEE)
 
         if df_matches.empty:
-            c2.title('Aucun appareil valide :no_entry:')
+            c2.header('Aucun appareil valide :no_entry:')
             c2.error(':warning: Validez votre sélection')
 
         # Préparation de propositions si aucun match :
@@ -318,30 +321,34 @@ def main():
 
         c2.title("Vérification par numéro AHRI")
 
-        df_AHRI = (df_CEE
-                   .query(f"AHRI=={num_AHRI}")
-                   .drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
-                   .drop_duplicates()
-                   .reset_index(drop=True))
-
-        if df_AHRI.empty:
-            c2.error(':warning:  Aucun résultat pour ce numéro AHRI')
+        if len(num_AHRI) == 0:
+            c2.warning(":warning: Veuillez entrer une sélection complète")
         else:
-            c2.success(
-                ":white_check_mark:  Combinaison trouvée pour ce numéro AHRI")
-            c2.dataframe(df_AHRI, use_container_width=True)
 
-            # Bouton Download AHRI
-            df_temp = (df_AHRI
-                       .sort_values('AHRI')
-                       .reset_index(drop=True)
-                       )
-            df_temp.at[0, 'AHRI Proposé'] = num_AHRI
-            df_temp.at[0, 'Vérifié le'] = datetime.now()
-            c2.download_button(
-                label="📥 Télécharger résultats AHRI",
-                data=to_excel(df_temp, 'AHRI'),
-                file_name='resultat_AHRI.xlsx')
+            df_AHRI = (df_CEE
+                       .query(f"AHRI=={num_AHRI}")
+                       .drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
+                       .drop_duplicates()
+                       .reset_index(drop=True))
+
+            if df_AHRI.empty:
+                c2.error(':warning:  Aucun résultat pour ce numéro AHRI')
+            else:
+                c2.success(
+                    ":white_check_mark:  Combinaison trouvée pour ce numéro AHRI")
+                c2.dataframe(df_AHRI, use_container_width=True)
+
+                # Bouton Download AHRI
+                df_temp = (df_AHRI
+                           .sort_values('AHRI')
+                           .reset_index(drop=True)
+                           )
+                df_temp.at[0, 'AHRI Proposé'] = num_AHRI
+                df_temp.at[0, 'Vérifié le'] = datetime.now()
+                c2.download_button(
+                    label="📥 Télécharger résultats AHRI",
+                    data=to_excel(df_temp, 'AHRI'),
+                    file_name='resultat_AHRI.xlsx')
 
 
 if __name__ == "__main__":
