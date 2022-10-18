@@ -42,7 +42,7 @@ def main():
 
     c1, espace, c2 = st.columns((0.25, 0.05, 1))
 
-    c1.subheader("Inscrire les modèles d'appareils recherchés")
+    c1.subheader("Recherche par modèles d'appareils")
 
     form = c1.form("template_form")
 
@@ -50,7 +50,16 @@ def main():
     evap_prop = form.text_input("Evaporateur")
     fournaise_prop = form.text_input("Fournaise")
 
-    submit = form.form_submit_button("Rechercher")
+    submit_Appareils = form.form_submit_button("Rechercher")
+
+    # Recherche par numéro AHRI
+    c1.subheader("Recherche par numéro AHRI")
+
+    formAHRI = c1.form("template_form_AHRI")
+
+    num_AHRI = formAHRI.text_input("Numéro AHRI")
+
+    submit_AHRI = formAHRI.form_submit_button("Rechercher")
 
     # Une fois le site chargé, charger les données et les préparer
 
@@ -69,7 +78,7 @@ def main():
 
     # Au clic du bouton 'Rechercher', trouver les matches et afficher les résultats / suggestions
 
-    if submit:
+    if submit_Appareils:
         equip_prop = [cond_prop.upper(), evap_prop.upper(),
                       fournaise_prop.upper()]
 
@@ -304,6 +313,38 @@ def main():
                     verif_duo_exp.write("")
                     verif_duo_exp.write(
                         '_Attention : bien valider la sélection complète_')
+
+    if submit_AHRI:
+
+        c2.title("Vérification par numéro AHRI")
+
+        df_AHRI = (df_CEE
+                   .query(f"AHRI=={num_AHRI}")
+                   .drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
+
+                   # .filter(['Marque', app])
+                   .drop_duplicates()
+                   # .sort_values(['Marque', app])
+                   .reset_index(drop=True))
+
+        if df_AHRI.empty:
+            c2.warning(':warning:  Aucun résultat pour ce numéro AHRI')
+        else:
+            c2.success(
+                ":white_check_mark:  Appareils trouvés pour ce numéro AHRI")
+            c2.dataframe(df_AHRI, use_container_width=True)
+
+            # Bouton Download AHRI
+            df_temp = (df_AHRI
+                       .sort_values('AHRI')
+                       .reset_index(drop=True)
+                       )
+            df_temp.at[0, 'AHRI Proposé'] = num_AHRI
+            df_temp.at[0, 'Vérifié le'] = datetime.now()
+            c2.download_button(
+                label="📥 Télécharger résultats AHRI",
+                data=to_excel(df_temp, 'AHRI'),
+                file_name='resultat_AHRI.xlsx')
 
 
 if __name__ == "__main__":
