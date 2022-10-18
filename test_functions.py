@@ -88,7 +88,7 @@ def test_finddMatcheManque2():
     assert finddMatches(["YHG42B", "CM48CBC", "TM9Y080C16MP"], df_CEE).empty
 
 
-def test_finddMatcheSansCond():
+def test_finddMatcheSansCondenseur():
 
     df_test = finddMatches(
         ["", "CM48CBCA1", "TM9Y080C16MP11"], df_CEE)
@@ -158,7 +158,7 @@ def test_finddMatchePartielsManque2():
     assert resultats == ["YHG42B21", "CM48CBBA1", "TM9Y080C16MP11"]
 
 
-def test_finddMatchePartielsSansCond():
+def test_finddMatchePartielsSansCondenseur():
 
     df_test = finddMatchePartiels(
         ["", "CM48CBC", "TM9Y080C16MP"], df_CEE)
