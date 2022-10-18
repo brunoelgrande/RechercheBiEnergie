@@ -321,17 +321,14 @@ def main():
         df_AHRI = (df_CEE
                    .query(f"AHRI=={num_AHRI}")
                    .drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
-
-                   # .filter(['Marque', app])
                    .drop_duplicates()
-                   # .sort_values(['Marque', app])
                    .reset_index(drop=True))
 
         if df_AHRI.empty:
-            c2.warning(':warning:  Aucun résultat pour ce numéro AHRI')
+            c2.error(':warning:  Aucun résultat pour ce numéro AHRI')
         else:
             c2.success(
-                ":white_check_mark:  Appareils trouvés pour ce numéro AHRI")
+                ":white_check_mark:  Combinaison trouvée pour ce numéro AHRI")
             c2.dataframe(df_AHRI, use_container_width=True)
 
             # Bouton Download AHRI
