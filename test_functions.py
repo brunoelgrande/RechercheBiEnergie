@@ -1,7 +1,17 @@
+# -*- coding: utf-8 -*-
+"""
+Test pour vérification des fonctions avec pytest
+Pour utilisation par : rechercherBiEnergie.py
+
+`> pytest`
+
+Created on 2022-10-17
+@author: Bruno Gauthier
+"""
+
 from functions import *
 
 
-# Test des fonctions avec > pytest
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 # Préparation df avec les données
