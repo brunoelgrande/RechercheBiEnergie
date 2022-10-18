@@ -328,7 +328,7 @@ def main():
                    .reset_index(drop=True))
 
         if df_AHRI.empty:
-            c2.warning(':warning:  Aucun résultat pour ce numéro AHRI')
+            c2.error(':warning:  Aucun résultat pour ce numéro AHRI')
         else:
             c2.success(
                 ":white_check_mark:  Appareils trouvés pour ce numéro AHRI")
