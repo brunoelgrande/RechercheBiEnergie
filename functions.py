@@ -16,6 +16,12 @@ from io import BytesIO
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 
+def type_appareils() -> list[str]:
+    return ['Condenseur', 'Evaporateur', 'Fournaise']
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+
 def prepString(String: str) -> str:
     # Remplace les parenthèses de type Wildcard par '.' pour RegEx
     while(String.find('(') != -1):
@@ -78,6 +84,7 @@ def rechercheRegExPartielle(equip_prop: str, equip_liste: str) -> bool:
 def finddMatches(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
 
     liste_match = []   # [Index de liste, match condenseur, match evaporateur, match fournaise]
+    apps = type_appareils()
 
     for i in df_CEE.index:
         equip_liste = [df_CEE['Condenseur_Prep'].iloc[i],
@@ -95,7 +102,7 @@ def finddMatches(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
     df_matches = pd.DataFrame(liste_match)
     if (len(df_matches) > 0):
         df_matches.columns = [
-            'index', 'Condenseur', 'Evaporateur', 'Fournaise']
+            'index', apps[0], apps[1], apps[2]]
 
     return df_matches
 
@@ -106,6 +113,8 @@ def finddMatches(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
 def finddMatchePartiels(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
 
     liste_match = []   # [index, match condenseur, match evaporateur, match fournaise]
+    apps = type_appareils()   # ['Condenseur', 'Evaporateur', 'Fournaise']
+
     df_matchesPart = pd.DataFrame({'': []})  # Empty DF, si tout est faux
     # Faire recherche seulement si au moins 'dim_minimale' caractères :
     dim_minimale = 3
@@ -157,17 +166,11 @@ def finddMatchePartiels(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataF
         df_matchesPart = pd.DataFrame(liste_match)
 
         if (len(df_matchesPart) > 0):
-            df_matchesPart.columns = [
-                'index', 'Condenseur', 'Evaporateur', 'Fournaise']
+            df_matchesPart.columns = ['index', apps[0], apps[1], apps[2]]
 
-            if len(df_matchesPart.query('Condenseur==True')) > 0:
-                verif_active[0] = False
-
-            if len(df_matchesPart.query('Evaporateur==True')) > 0:
-                verif_active[1] = False
-
-            if len(df_matchesPart.query('Fournaise==True')) > 0:
-                verif_active[2] = False
+            for i in range(len(apps)):
+                if len(df_matchesPart.query(f'{apps[i]}==True')) > 0:
+                    verif_active[i] = False
 
     return df_matchesPart
 

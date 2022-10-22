@@ -47,7 +47,7 @@ def main():
     form = c1.form("template_form")
 
     cond_prop = form.text_input("Condenseur")
-    evap_prop = form.text_input("Evaporateur")
+    evap_prop = form.text_input("Évaporateur")
     fournaise_prop = form.text_input("Fournaise")
 
     submit_Appareils = form.form_submit_button("Rechercher")
@@ -127,7 +127,7 @@ def main():
                         c2.dataframe(df_fournaisePartiel,
                                      use_container_width=True)
 
-        # Si au moins au matches sur un des types d'équipements
+        # Si au moins un matche sur un des types d'équipements
         else:
 
             df_trio = (df_CEE
