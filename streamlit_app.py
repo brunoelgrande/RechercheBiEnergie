@@ -326,7 +326,7 @@ def main():
         else:
 
             df_AHRI = (df_CEE
-                       .query("AHRI== @num_AHRI")
+                       .query(f'AHRI == {num_AHRI}')
                        .drop(['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep'], axis=1)
                        .drop_duplicates()
                        .reset_index(drop=True))
