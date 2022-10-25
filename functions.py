@@ -124,7 +124,7 @@ def finddMatchePartiels(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataF
                     (len(equip_prop[1]) >= dim_minimale),
                     (len(equip_prop[2]) >= dim_minimale)]
 
-    equip_prop_partiel = ""  # ["", "", ""]
+    equip_prop_partiel = ""
 
     indentation = 0
 
