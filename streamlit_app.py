@@ -113,17 +113,17 @@ def main():
                             "Proposition d'appreils près de vos sélections")
                     if not df_condPartiel.empty:
                         c2.write(
-                            'Liste de condenseurs près de votre sélection')
+                            'Liste de **condenseurs** près de votre sélection')
                         c2.dataframe(df_condPartiel,
                                      use_container_width=True)
                     if not df_evapPartiel.empty:
                         c2.write(
-                            "Liste d'évaporateurs près de votre sélection")
+                            "Liste d'**évaporateurs** près de votre sélection")
                         c2.dataframe(df_evapPartiel,
                                      use_container_width=True)
                     if not df_fournaisePartiel.empty:
                         c2.write(
-                            'Liste de fournaises près près de votre sélection')
+                            'Liste de **fournaises** près de votre sélection')
                         c2.dataframe(df_fournaisePartiel,
                                      use_container_width=True)
 
