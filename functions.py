@@ -115,6 +115,8 @@ def finddMatchePartiels(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataF
     liste_match = []   # [index, match condenseur, match evaporateur, match fournaise]
     apps = type_appareils()   # ['Condenseur', 'Evaporateur', 'Fournaise']
 
+    cols_prep = ['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep']
+
     df_matchesPart = pd.DataFrame({'': []})  # Empty DF, si tout est faux
     # Faire recherche seulement si au moins 'dim_minimale' caractères :
     dim_minimale = 3
@@ -122,45 +124,48 @@ def finddMatchePartiels(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataF
                     (len(equip_prop[1]) >= dim_minimale),
                     (len(equip_prop[2]) >= dim_minimale)]
 
-    equip_prop_partiel = ["", "", ""]
+    equip_prop_partiel = ""  # ["", "", ""]
 
     indentation = 0
 
     # Rechercher tous les appareils encore en vérification (pas encore trouvé de match partiel)
     while verif_active != [False, False, False]:
+
         indentation += 1
 
-        for x in range(3):
+        # Vérification pour chaque type d'appareils
+        for type_app in range(len(apps)):
 
-            verif = [False, False, False]
+            verif_iteration = [False, False, False]
 
-            if verif_active[x]:
+            # Est-ce qu'on cherche encore pour le type d'appareil
+            if verif_active[type_app]:
 
-                # Ajuster le nombre de lettre à rechercher
-                equip_prop_partiel[x] = equip_prop[x][:-indentation]
+                # Ajuster le nombre de lettre à rechercher en fonction de l'indentation en cours
+                equip_prop_partiel = equip_prop[type_app][:-indentation]
 
-                if (len(equip_prop_partiel[x]) >= dim_minimale):
+                if (len(equip_prop_partiel) >= dim_minimale):
 
-                    for i in df_CEE.index:
-                        equip_liste = [df_CEE['Condenseur_Prep'].iloc[i],
-                                       df_CEE['Evaporateur_Prep'].iloc[i],
-                                       df_CEE['Fournaise_Prep'].iloc[i]]
+                    for idx in df_CEE.index:
+                        # Choisir le nom d'équipement dans la bonne colonne
+                        equip_liste = df_CEE[cols_prep[type_app]].iloc[idx]
 
-                # recherche
-                        verif[x] = rechercheRegExPartielle(
-                            equip_prop_partiel[x], equip_liste[x])
+                        # Recherche
+                        verif_iteration[type_app] = rechercheRegExPartielle(
+                            equip_prop_partiel, equip_liste)
 
                         # Si match, on l'ajoute à la liste
-                        if (verif[x]):
+                        if (verif_iteration[type_app]):
                             # création d'une liste de listes
                             liste_match.append(
-                                [i, verif[0], verif[1], verif[2]])
+                                [idx, verif_iteration[0], verif_iteration[1], verif_iteration[2]])
 
-                        verif = [False, False, False]
+                        # Remise à zéro
+                        verif_iteration = [False, False, False]
 
                 # L'equipement proposé en maintenant trop court, il ne faut plus le vérifier
                 else:
-                    verif_active[x] = False
+                    verif_active[type_app] = False
 
         # Est-ce qu'on a trouvé au moins 1 match en enlevement X indentation :
         df_matchesPart = pd.DataFrame(liste_match)
