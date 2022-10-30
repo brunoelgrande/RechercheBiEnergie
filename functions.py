@@ -44,8 +44,8 @@ def importData(nom_fichier: str) -> pd.DataFrame:
 def rechercheRegEx(equip_prop: list[str], equip_liste: list[str]) -> list[bool]:
 
     # Initialisation des listes
-    equip_format = ["", "", ""]
-    verif = [False, False, False]
+    equip_format = ["" for i in range(3)]
+    verif = [False for i in range(3)]
 
     # Besoin que l'équipement proposé soit de la même longueur que l'élément vérifié de la liste
     for x in range(len(equip_prop)):
@@ -96,20 +96,20 @@ def finddMatches(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
         # Si au moins 1 match, on l'ajoute à la liste
         if (verif[0] | verif[1] | verif[2]):
             # création d'une liste de listes
-            liste_match.append([i, verif[0], verif[1], verif[2]])
+            liste_match.append([i, *verif])  # verif[0], verif[1], verif[2]
 
     # Création d'un df avec tous les matches
     df_matches = pd.DataFrame(liste_match)
     if (len(df_matches) > 0):
         df_matches.columns = [
-            'index', apps[0], apps[1], apps[2]]
+            'index', *apps]  # apps[0], apps[1], apps[2]
 
     return df_matches
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 
-@st.cache
+@ st.cache
 def finddMatchePartiels(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
 
     liste_match = []   # [index, match condenseur, match evaporateur, match fournaise]
@@ -158,7 +158,7 @@ def finddMatchePartiels(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataF
                         if (verif_iteration[type_app]):
                             # création d'une liste de listes
                             liste_match.append(
-                                [idx, verif_iteration[0], verif_iteration[1], verif_iteration[2]])
+                                [idx, *verif_iteration])
 
                         # Remise à zéro
                         verif_iteration = [False, False, False]
@@ -171,7 +171,7 @@ def finddMatchePartiels(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataF
         df_matchesPart = pd.DataFrame(liste_match)
 
         if (len(df_matchesPart) > 0):
-            df_matchesPart.columns = ['index', apps[0], apps[1], apps[2]]
+            df_matchesPart.columns = ['index', *apps]
 
             for i in range(len(apps)):
                 if len(df_matchesPart.query(f'{apps[i]}==True')) > 0:
@@ -214,7 +214,7 @@ def phraseAccompagnement(type_equip: str, df: pd.DataFrame) -> str:
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-@st.cache
+@ st.cache
 def to_excel(df: pd.DataFrame, onglet: str):
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
