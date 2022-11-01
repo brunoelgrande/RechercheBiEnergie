@@ -37,6 +37,10 @@ def importData(nom_fichier: str) -> pd.DataFrame:
 
     df = pd.read_csv(nom_fichier, index_col='index')
 
+    # Changement en category
+    df['Manufacturier'] = df['Manufacturier'].astype('category')
+    df['Marque'] = df['Marque'].astype('category')
+
     return df
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
