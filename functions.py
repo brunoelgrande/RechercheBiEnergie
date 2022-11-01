@@ -91,7 +91,7 @@ def finddMatches(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
                        df_CEE['Evaporateur_Prep'].iloc[i],
                        df_CEE['Fournaise_Prep'].iloc[i]]
 
-        verif = rechercheRegEx(equip_prop, equip_liste)
+        verif = rechercheRegEx(equip_prop, equip_liste)  # Vrai ou Faux
 
         # Si au moins 1 match, on l'ajoute à la liste
         if (verif[0] | verif[1] | verif[2]):
@@ -104,7 +104,7 @@ def finddMatches(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
         df_matches.columns = [
             'index', *apps]  # apps[0], apps[1], apps[2]
 
-    return df_matches
+    return df_matches  # [idx, bool, bool, bool]
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
