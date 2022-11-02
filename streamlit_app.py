@@ -333,7 +333,12 @@ def main():
         c2.title("Vérification par numéro AHRI")
 
         if len(num_AHRI) == 0:
-            c2.warning(":warning: Veuillez entrer une sélection complète")
+            c2.error(":warning: Veuillez entrer une sélection complète")
+
+        elif not num_AHRI.isnumeric():
+            c2.error(
+                ":warning: Le numéro AHRI ne peut être formé que de chiffres")
+
         else:
 
             df_AHRI = (df_CEE
