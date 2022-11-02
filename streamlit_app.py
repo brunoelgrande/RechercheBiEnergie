@@ -11,6 +11,7 @@ import pandas as pd
 from pyxlsb import open_workbook as open_xlsb
 from io import BytesIO
 from datetime import datetime
+import pytz
 
 from functions import *
 
@@ -79,6 +80,9 @@ def main():
     # Au clic du bouton 'Rechercher', trouver les matches et afficher les résultats / suggestions
 
     if submit_Appareils:
+
+        # Heure de vérification
+        now = datetime.now(pytz.timezone('America/Toronto'))
 
         c2.title("Vérification par modèles d'appareils")
 
@@ -168,9 +172,11 @@ def main():
                            .sort_values('AHRI')
                            .reset_index(drop=True)
                            )
+                df_temp.at[0, 'Vérifié le'] = now.strftime(
+                    "%Y/%m/%d - %H:%M:%S")
                 df_temp.at[0, 'Condenseur Proposé'] = equip_prop[0]
                 df_temp.at[0, 'Évaporateur Proposé'] = equip_prop[1]
-                df_temp.at[0, 'Vérifié le'] = datetime.now()
+                df_temp.at[0, 'Fournaise Proposée'] = equip_prop[2]
                 c2.download_button(
                     label="📥 Télécharger résultats TRIO",
                     data=to_excel(df_temp, 'Trio'),
@@ -196,9 +202,10 @@ def main():
                            .drop(columns='Fournaise')
                            .reset_index(drop=True)
                            )
+                df_temp.at[0, 'Vérifié le'] = now.strftime(
+                    "%Y/%m/%d - %H:%M:%S")
                 df_temp.at[0, 'Condenseur Proposé'] = equip_prop[0]
                 df_temp.at[0, 'Évaporateur Proposé'] = equip_prop[1]
-                df_temp.at[0, 'Vérifié le'] = datetime.now()
 
                 c2.download_button(
                     label="📥 Télécharger résultats DUO",
@@ -221,9 +228,10 @@ def main():
                 verif_duo_exp.dataframe(sugg_fournaise.filter(
                     ['Fournaise']), use_container_width=True)
 
+                df_temp.at[0, 'Vérifié le'] = now.strftime(
+                    "%Y/%m/%d - %H:%M:%S")
                 sugg_fournaise.at[0, 'Condenseur Proposé'] = equip_prop[0]
                 sugg_fournaise.at[0, 'Évaporateur Proposé'] = equip_prop[1]
-                sugg_fournaise.at[0, 'Vérifié le'] = datetime.now()
 
                 # Bouton Download FOURNAISES proposées
                 verif_duo_exp.download_button(
@@ -319,6 +327,9 @@ def main():
 
     if submit_AHRI:
 
+        # Heure de vérification
+        now = datetime.now(pytz.timezone('America/Toronto'))
+
         c2.title("Vérification par numéro AHRI")
 
         if len(num_AHRI) == 0:
@@ -343,8 +354,10 @@ def main():
                            .sort_values('AHRI')
                            .reset_index(drop=True)
                            )
+                df_temp.at[0, 'Vérifié le'] = now.strftime(
+                    "%Y/%m/%d - %H:%M:%S")
                 df_temp.at[0, 'AHRI Proposé'] = num_AHRI
-                df_temp.at[0, 'Vérifié le'] = datetime.now()
+
                 c2.download_button(
                     label="📥 Télécharger résultats AHRI",
                     data=to_excel(df_temp, 'AHRI'),
