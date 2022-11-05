@@ -12,6 +12,8 @@ import re
 import pandas as pd
 from pyxlsb import open_workbook as open_xlsb
 from io import BytesIO
+from datetime import datetime
+import pytz
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -246,3 +248,15 @@ def cleanDF(df_CEE: pd.DataFrame, df_matchesPartiels: pd.DataFrame, app: str) ->
           .reset_index(drop=True))
 
     return df
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+
+def timeStampAsStr() -> str:
+    """
+    Retourne la date et heure sous format str
+    """
+    now = datetime.now(pytz.timezone('America/Toronto'))
+    now = now.strftime("%Y/%m/%d - %H:%M:%S")
+
+    return now
