@@ -85,6 +85,37 @@ def rechercheRegExPartielle(equip_prop: str, equip_liste: str) -> bool:
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+# Function ne fonctionne pas encore, à débugger dans un notebook
+# OBJ : éliminier l'utlisation des loops
+
+
+def finddMatchesAPPLY(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
+    df = (df_CEE
+          [['Condenseur_Prep', 'Evaporateur_Prep', 'Fournaise_Prep']]
+          .assign(
+              Condenseur=df_CEE.apply(lambda x: True if re.match(
+                  prepString(equip_prop[0])[:len(x.Condenseur_Prep)],
+                  x.Condenseur_Prep) else False, axis=1),
+
+              Evaporateur=df_CEE.apply(lambda x: True if re.match(
+                  prepString(equip_prop[1])[:len(x.Evaporateur_Prep)],
+                  x.Evaporateur_Prep) else False, axis=1),
+
+              Fournaise=df_CEE.apply(lambda x: True if re.match(
+                  prepString(equip_prop[2])[:len(x.Fournaise_Prep)],
+                  x.Fournaise_Prep) else False, axis=1),
+
+              index=df_CEE.index
+          )
+
+          [['index', 'Condenseur', 'Evaporateur', 'Fournaise']]
+
+          )
+
+    return df.loc[df.Condenseur | df.Evaporateur | df.Fournaise]
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
 
 @st.cache
 def finddMatches(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataFrame:
