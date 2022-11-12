@@ -210,8 +210,8 @@ def finddMatchePartiels(equip_prop: list[str], df_CEE: pd.DataFrame) -> pd.DataF
         if (len(df_matchesPart) > 0):
             df_matchesPart.columns = ['index', *apps]
 
-            for i in range(len(apps)):
-                if len(df_matchesPart.query(f'{apps[i]}==True')) > 0:
+            for i, app in enumerate(apps):
+                if len(df_matchesPart.query(f'{app}==True')) > 0:
                     verif_active[i] = False
 
     return df_matchesPart
