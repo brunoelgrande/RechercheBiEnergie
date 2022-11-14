@@ -45,9 +45,9 @@ def main():
 
     form = c1.form("template_form")
 
-    cond_prop = form.text_input("Condenseur")
-    evap_prop = form.text_input("Évaporateur")
-    fournaise_prop = form.text_input("Fournaise")
+    cond_prop = form.text_input("Condenseur").strip()
+    evap_prop = form.text_input("Évaporateur").strip()
+    fournaise_prop = form.text_input("Fournaise").strip()
 
     submit_Appareils = form.form_submit_button("Rechercher")
 
@@ -56,7 +56,7 @@ def main():
 
     formAHRI = c1.form("template_form_AHRI")
 
-    num_AHRI = formAHRI.text_input("Numéro AHRI")
+    num_AHRI = formAHRI.text_input("Numéro AHRI").strip()
 
     submit_AHRI = formAHRI.form_submit_button("Rechercher")
 
