@@ -36,6 +36,14 @@ def prepString(String: str) -> str:
 
 
 def importData(nom_fichier: str) -> pd.DataFrame:
+    """Lecture des données d'appareils de la liste et ajustement des types de données
+
+    Args:
+        nom_fichier (str): Fichier CSV contenant les données
+
+    Returns:
+        pd.DataFrame: Données sous formes de dataframe
+    """
 
     df = pd.read_csv(nom_fichier, index_col='index')
 
@@ -48,6 +56,15 @@ def importData(nom_fichier: str) -> pd.DataFrame:
 
 
 def rechercheRegEx(equip_prop: list[str], equip_liste: list[str]) -> list[bool]:
+    """Comparaison RegEx sur des trio d'appareils
+
+    Args:
+        equip_prop (list[str]): Appareils du trio recherché
+        equip_liste (list[str]): Appareils en provenance de la liste d'appareils approuvés 
+
+    Returns:
+        list[bool]: Liste de true si la comparaison RegEx est positive
+    """
 
     # Initialisation des listes
     equip_format = ["" for i in range(3)]
